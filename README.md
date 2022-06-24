@@ -36,7 +36,7 @@ $ curl http://chals1.ais3.org:8987/poke -H 'Cookie: human=bear poker' -d 'bear _
 ### Simple File Uploader
 
 1. 不能上傳 `php`, `php2`, `php3`, `php4`, `php5`, `php6`, `phar`, `phtm`，可以用 `pHP` bypass 檢查。
-2. Ban 掉一堆危險 function，可以用 ``` RCE。
+2. Ban 掉一堆危險 function，可以用 `` ` `` 執行 shell command 讀取 flag。
 
 ```php
 <?php
