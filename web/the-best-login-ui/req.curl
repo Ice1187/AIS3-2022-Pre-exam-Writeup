@@ -1,0 +1,1 @@
+curl 'http://chals1.ais3.org:54088/login' -X POST -H 'Content-Type: application/x-www-form-urlencoded' --data-raw 'username=LaV84%7CQ%26g%7Ccm%29q%29%253%7CT%29wO0E%3B%2CVn%28%235j%7C.Hh%3CX%3D%24%2B1QSu%3DN%3FE%3D&password=FT%40et_%23%3FmZT%40_ed7%3FkPnxQu%7DFGy3%7Ew%2BUb48v%2B+D%29AVaW%3FrM2qe'
