@@ -8,9 +8,9 @@
 ## Web
 ### Poking Bear
 
-1. 網頁上顯示的幾隻 bear 的 URL 為 `/bear/<n>`，因此猜測要找的 bear 應該也是同樣的格式。
+1. 網頁上顯示的 bear 的 URL 為 `/bear/<n>`，因此猜測要找的 bear 應該也是同樣的格式。
 
-2. 產生 `0` ~ `1000` 的 wordlist `bear.txt`，然後用 `ffuf` 進行爆搜，並將沒有 bear 的結果過濾掉。找到唯一不在網頁上的 bear `499` 為 secret bear。
+2. 產生 `0` ~ `1000` 的 wordlist `bear.txt`，然後用 `ffuf` 進行爆搜，並將沒有 bear 的結果過濾掉。找到唯一不在網頁上的 bear `499` 即為 secret bear。
 ```bash
 $ ffuf -u http://chals1.ais3.org:8987/bear/FUZZ -w ./bear.txt | grep -v 'Size: 1358 ./fuzz_bear.txt
 5                       [Status: 200, Size: 1742, Words: 295, Lines: 42]
