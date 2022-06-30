@@ -5,6 +5,33 @@
 
 <img width="800" alt="ais3-pre-exam-scoreboard" src="https://user-images.githubusercontent.com/38059464/175545378-5b5f373e-7da8-4c96-b7d7-463e5a16caf5.png" >
 
+## Reverse
+### Time Management
+
+1. 每次 print flag 的一個字元要等 30000 多秒。
+<img width="600" alt="time-management-sleep" src="https://user-images.githubusercontent.com/38059464/176660727-2e290e6f-0d5c-44c4-b296-f1fd0978461a.png">
+
+2. 從 `objdump` 找到要 patch 的 instruction 在 `0x122b`。
+<img width="600" alt="time-management-instruct" src="https://user-images.githubusercontent.com/38059464/176661153-ef3dc1bc-751e-480f-89d2-edeef8959421.png">
+
+3. 用 vim 打開 `chal`，然後輸入指令 `:%!xxd` 將 binary 轉成 `xxd` 的 hexdump 格式。
+<img width="527" alt="time-management-convert" src="https://user-images.githubusercontent.com/38059464/176663520-977eb575-f806-43b7-9df4-b87a9487ee95.png">
+
+4. 找到 `0x122b` 的位置即為要 patch 的部分 `0x00008763`。
+<img width="600" alt="time-management-before-patch" src="https://user-images.githubusercontent.com/38059464/176662170-71bd84e7-b3c9-475e-9d6d-20109f4dfbd1.png">
+
+5. 將其修改成 1 秒，同時也把右半部的 ASCII 改成 `.`。
+<img width="600" alt="time-management-after-patch" src="https://user-images.githubusercontent.com/38059464/176662667-939556fb-5fde-4703-a23c-8d10037923b2.png">
+
+6. 輸入指令 `:%!xxd -r` 將 hexdump revert 回 binary。
+<img width="600" alt="time-management-revert" src="https://user-images.githubusercontent.com/38059464/176663015-142c69ca-0ad9-4692-815a-d126cb9e6af2.png">
+
+7. 執行 patch 後的 binary 即可得到 flag，但因為最後會輸出 `\r`，因此要邊輸出邊按換行避免輸出被蓋掉。
+<img width="600" alt="time-management-flag" src="https://user-images.githubusercontent.com/38059464/176664787-295a4753-cfaa-4479-b3ce-7bd92ddad48c.png">
+
+**Flag: `AIS3{You_are_the_master_of_time_management!!!!!}`**
+
+
 ## Web
 ### Poking Bear
 
@@ -79,10 +106,6 @@ total 32K
 3. 使用 [`$regex`](https://www.mongodb.com/docs/manual/reference/operator/query/regex/#mongodb-query-op.-regex) 把 flag 爆出來，當時寫的 script 超醜就不貼了...。
 
 **Flag: `AIS3{Bl1nd-b4s3d r3gex n0sq1i?! (:3[___]}`**
-
-
-## Reverse
-
 
 ## Pwn
 
