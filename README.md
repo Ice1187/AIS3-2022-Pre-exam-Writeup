@@ -174,6 +174,24 @@ print(flag)
 
 ### Rideti
 
+1. 字串中的 `@CONGRATULATIONS!` 應該是我們的目標。
+<img width="589" alt="rideti-strings" src="https://user-images.githubusercontent.com/38059464/176874153-6c012257-c844-4f0d-8a03-aa7cf079f50d.png">
+
+2. IDA 不認得 string。觀察字串的使用方式後，可以建出 `my_string` struct 然後 apply 到字串上。
+<img width="879" alt="rideti-my-string" src="https://user-images.githubusercontent.com/38059464/176874522-07ab2d89-402d-46d4-b86e-7b86724d4826.png">
+
+3. 經過一番逆向後，可以發現去到勝利畫面 `scene_final` 的條件為 `scene_state = 2`，而當分數 `score = 3962971405739` 時，`scene_state` 被設成 2。
+
+<img width="623" alt="rideti-scene-final" src="https://user-images.githubusercontent.com/38059464/176875514-7adf1c53-0eac-4d3d-b37f-8bea4acb5cee.png">
+
+<img width="681" alt="rideti-set-scene-2" src="https://user-images.githubusercontent.com/38059464/176875762-a279a0cc-25d3-4768-a2b2-c13f4b4dd793.png">
+
+4. 用 [`x64dbg`](https://x64dbg.com) 在走到 check 時手動把 `score` 改成 `3962971405739` 即可拿到 flag。`x64dbg` 使用教學可以參考[這個](https://morosedog.gitlab.io/categories/x64dbg/page/4/)。
+
+<img width="727" alt="rideti-flag" src="https://user-images.githubusercontent.com/38059464/176876978-cc14e03d-32e7-4929-a672-fb5082393f18.png">
+
+**Flag: 沒有存到當時給的 flag 字體的網站，所以就看圖吧**
+
 
 ### Strings
 
