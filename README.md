@@ -33,7 +33,32 @@
 
 ### Calculator
 
+1. 用 [`dnSpy`](https://github.com/dnSpy/dnSpy) 打開 `Extensions` 中的各個 `AIS3.dll`，可以看到多層對輸入的檢查。
+<img width="800" alt="calculator-check" src="https://user-images.githubusercontent.com/38059464/176863412-08014fae-f061-4acf-a1fa-2098ddffd515.png">
 
+2. 使用 `z3` 找出正確的輸入即為 flag，詳細 code 可以參考 `solve.py`。
+
+```python
+from z3 import *
+
+a = [BitVec(f'a[{i}]', 8) for i in range(46)]
+solver = Solver()
+
+solver.add(a[0] == ord('A'))
+
+# AIS3
+offset = 1
+solver.add(a[14+offset] == ord('A'))
+solver.add(a[3+offset] == ord('{'))
+array = [30, 4, 100]
+for i in range(len(array)):
+    solver.add((a[i+offset] ^ ord('W')) == array[i])
+print(solver.check())
+
+# more checks...
+```
+
+**Flag: `AIS3{D0T_N3T_FRAm3W0rk_15_S0_C0mPlicaT3d__G_G}`**
 
 ### 殼
 
@@ -147,8 +172,45 @@ print(flag)
 
 **Flag: `AIS3{from_rop_to_python_to_pickle_to_math}`**
 
+### Rideti
 
 
+### Strings
+
+1. 既然題目叫 `Strings`，就先 `strings` 一下，可以發現類似 flag 的字串。
+<img width="800" alt="strings-likely-flag" src="https://user-images.githubusercontent.com/38059464/176866947-dc777d95-7e64-4370-8867-af7e0cdb2558.png">
+
+2. 此題為 Rust binary，IDA 的 decompile 很難看，直接看 disassembly graph 會好一點。經過一番動靜態混合的分析，可以找到輸入從 `my_readline` 讀入。
+<img width="747" alt="strings-my_readline" src="https://user-images.githubusercontent.com/38059464/176865770-f7527f18-a247-4ba3-9172-9b24ae662d08.png">
+
+3. 將輸入 `trim` 過之後，以 `_` 為分隔做 `split`。
+<img width="800" alt="strings-trim-split" src="https://user-images.githubusercontent.com/38059464/176866068-7bb79a10-e436-4428-80f1-38a989767843.png">
+
+4. `split` 之後存入 `vec` 型態，然後進入共 11 次的 loop。由此可以猜測 flag 裡應該由 10 個 `_` 和 11 個字串組合而成。
+
+<img width="759" alt="strings-11-loop" src="https://user-images.githubusercontent.com/38059464/176867065-ed4d987a-c9c4-4366-8e9e-b503cfe1e413.png">
+
+5. loop 裡 `memcpy` 了 11 個 integer `some_index`，然後用這些 integer 去 index 最一開始看到的類似 flag 的字串 `FLAG`，再和輸入進行比較。因此猜測這 11 個數字便是 `FLAG` 裡組成 flag 的字串的 index。
+
+<img width="800" alt="strings-memcpy-flag" src="https://user-images.githubusercontent.com/38059464/176867668-cc0d418b-b9a6-4b2b-bf74-fcfb4206f8ff.png">
+
+<img width="348" alt="strings-some-index" src="https://user-images.githubusercontent.com/38059464/176869148-23affeb7-168a-4652-9f0f-9d58fc3b7a49.png">
+
+6. 驗證上述猜測便是 flag。
+
+```python
+flags = ['AIS3{', 'good', 'luck', 'finding', 'the', 'flags', 'value', 'using', 'strings',
+         'command', 'guess', 'which', 'substring', 'is', 'our', 'actual', 'answer', 'lmaoo', '}']
+indexes = [0, 0x4, 0x10, 0xd, 0xa, 0x4, 0x8, 0x7, 0x1, 0x2, 0x12]
+
+flag = []
+for i in indexes:
+    flag.append(flags[i])
+
+print('_'.join(flag))
+```
+
+**Flag: `AIS3{_the_answer_is_guess_the_strings_using_good_luck_}`**
 
 ## Web
 ### Poking Bear
