@@ -33,7 +33,7 @@
 
 ### Calculator
 
-To be written...
+
 
 ### 殼
 
@@ -57,7 +57,7 @@ $ node_modules/.bin/js-beautify ./decomp.js > decomp_beauty.js                  
 3. 簡單看一下 JavaScript code 可以發現輸入要以 `蛵煿 ` 開頭，然後輸入經過一些運算之後要符合 `密旗` (`MI4QI2`) 這個變數的內容。
 <img width="592" alt="wenyan-decomp" src="https://user-images.githubusercontent.com/38059464/176666873-ab912dba-1218-44e0-b0bb-d01f41b87c56.png">
 
-4. 後來實在是懶得看，觀察輸入之後發現每 3 個輸入字元決定 2 個輸出字元，因此把 mapping 建出來，就能直接從答案反推輸入了。所有組合大概有 1000000 組，最後花了 6~8 個小時建出大概 8 成的 mapping，然後反推輸入得到 flag。
+4. 後來實在是懶得看又醜又長的 JavaScript，觀察輸入之後發現每 3 個輸入字元決定 2 個輸出字元，因此把 mapping 建出來，就能直接從答案反推輸入了。所有組合大概有 1000000 組，最後花了 6~8 個小時建出大概 8 成的 mapping，然後反推輸入得到 flag。
 <img width="1372" alt="wenyan-guess" src="https://user-images.githubusercontent.com/38059464/176668657-68797378-5fea-4173-a99a-fb3aa1289847.png">
 
 **Flag: `AIS3{chaNcH4n_a1_Ch1k1ch1k1_84n8An_M1nNa_5upa5utA_n0_TAMa90_5a}`**
@@ -88,7 +88,7 @@ Bad
 3. 從 IDA 得知輸入開頭須為 `AIS3{`。
 <img width="533" alt="flag-checker-ais3-start" src="https://user-images.githubusercontent.com/38059464/176687851-9211a505-7b70-4ca4-a28c-1308ab8e265f.png">
 
-4. 使用 `gdb` 追進去，發現其透過 `execve` 執行 `python`。
+4. 用 `gdb` 追進去，看到 `Thread dubugging` 因此猜測可能有 call `fork` 或 `execve` 之類的 system call。用 `catch syscall` 在遇到 syscall 時中斷，發現其透過 `execve` 執行 `python`。
 ```gdb
 pwndbg> r
 Starting program: /flag_checker
@@ -122,10 +122,10 @@ pwndbg> ni
 <img width="800" alt="flag-checker-dump-python" src="https://user-images.githubusercontent.com/38059464/176690786-295fef4c-9da4-41e7-ae60-846c1fa5d3a7.png">
 <img width="800" alt="flag-checker-python-cmd" src="https://user-images.githubusercontent.com/38059464/176691230-ed335cfd-771c-4ba4-b317-9d5447cf3919.png">
 
-6. 用 [`picktools`](https://docs.python.org/3/library/pickletools.html) disassemble pickle code。
+6. 用 [`picktools`](https://docs.python.org/3/library/pickletools.html) disassemble pickle code，可以參考 script `disasm.py`。
 <img width="800" alt="flag-checker-disasm" src="https://user-images.githubusercontent.com/38059464/176692533-fa7bf77f-2e7f-44b5-81e8-1e8b2c805c3c.png">
 
-7. 讀一下 disassemble 的 pickle，可以還原其 check 大致如下：
+7. 讀一下 disassemble 的 pickle，還原其 check 大致如下：
 <img width="1384" alt="flag-checker-rsa-like-check" src="https://user-images.githubusercontent.com/38059464/176693484-340d42d5-702c-4c87-b4a4-3b180087e0ff.png">
 
 8. 觀察上述 check 可發現，此算法與 RSA 十分相似：`a` 是明文，`b` 是密文，`65537` 是 `e`，一長串模數是 `N`，只差在 [`N` 本身即是質數](http://factordb.com/index.php?query=542732316977950510497270190501021791757395568139126739977487019184541033966691938940926649138411381198426866278991473)，而不是兩個質數的積。但這並不影響 RSA decrypt 的運算，因此可以用以下方法還原輸入，得到 flag。
