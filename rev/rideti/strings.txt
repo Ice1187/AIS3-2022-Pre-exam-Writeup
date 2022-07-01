@@ -1,0 +1,392 @@
+`@.pdata
+0@.xdata
+0@.bss
+@B/70
+@[^_
+@[^_
+t L;@
+D$@H
+@ L9B u
+t&L;@
+tZI;@
+@H9Q0v
+@0H9
+@0H9
+@0H9
+@0H9
+@0H9
+@0H9
+@0H9
+@0H9
+@0H9
+@0H9
+@0H9
+|$@H
+D< @A
+>t@L
+LkD$@<M
+D$@H
+T$@H
+)D$@
+)T$@D
+(T$@D
+@[^_]A\
+@[^_]A\
+@[^_]A\
+)\$@fH
+ol$@H
+ol$@H
+@(fH
+@8fH
+D$@~IH
+D$X@
+d$@H
+D$x@
+\u@H
+@[^_
+@[^_]A\
+@[^_]A\
+@[^_]A\A]A^
+@[^_]A\A]A^
+@[^_]A\A]A^
+@[^_]A\A]A^
+@[^_]A\A]A^
+@[^_]A\
+@[^_]A\
+D$@H
+@[^_]A\
+@[^_]A\
+|$@H
+)D$@
+)D$@
+@ I9
+L$@H
+D$@M
+D$@M
+D$@M
+D$@M
+D$@M
+D$@M
+D$@H
+@ H9
+D$@H
+L$<@
+I9@(
+I9Q0u@A
+t	I9@(
+|$@I
+\$@L9
+T$@M
+D$@H
+D$@H
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+@[^_]A\
+L$@H
+L$@H
+L$@L
+T$@I
+T$@I
+L$@H
+L$@I
+L$@I
+L$@H
+L$@H
+L$@I
+T$@A
+)D$@D
+(D$@D
+L$@H
+L$HH9L$@
+|$HH9|$@
+L$HH9L$@
+t$@H
+t$@1
+|$@I
+\$@L9
+T$@M
+D$@H
+D$@H
+t$@H
+t$@1
+D$@H
+D$@I
+H;t$@u
+D$@I
+H9l$@
+H9l$@
+D$@M
+D$@H
+D$@I
+t$@K
+\$@f
+@D;D$<
+(D$@I
+)T$@
+(D$@f
+(D$@
+)}@D
+A;@x|
+Y@ L9
+(}@D
+)|$@D
+(|$@D
+od$@f
+L$@I
+L$@A
+)E@Hc
+(E@H
+D$@H
+T$@H
+T$@D
+D$@K
+F|$@D
+|$@E
+L$@@
+@(H)
+4@A+
+t$@H
+)D$@H
+o|$@
+)D$@
+o|$@
+l$@Hc
+@[^_
+)|$@
+(|$@H
+t$@L
+t$@H
+\$@H
+EHHc@
+*L$@
+)T$@D
+(T$@
+L$@E1
+D$@H
+@[^_]A\
+D$@H
+)t$@
+(t$@
+D$H+D$@
+D$@H
+H#D$@
+D$@H
+H;\$@
+D$@L
+T$@H
+T$@H
+)T$@
+)t$@
+(t$@1
+tKIc@<H
+@' t	H
+Ic@<H
+|$@H
+|$@H
+)t$@
+(t$@H
+(t$@H
+(t$@H
+(t$@H
+|$@H
+|$@H
+|$@H
+|$@H
+)t$@
+(t$@H
+(t$@H
+@error: 
+@cannot retrieve file position
+@cannot set file position
+@cannot open: 
+@cannot write string to file
+@kernel32
+@kernel32
+@ (invalid data!)
+@invalid object assignment
+@no exception to reraise
+@[[reraised from:
+@over- or underflow
+@invalid format string
+@kernel32
+@kernel32
+@Ws2_32.dll
+@LOCAL
+@SDL2.dll
+@SDL2.dll
+@added game controller: 
+@KEYBOARD
+@error opening game controller: 
+@channels: 
+@Converting non RGBA surface to indexed
+@cannot read from stream
+@cannot write to stream
+@Failed to create '
+@unknown OS error
+@Additional info: 
+@Requested command not found: '$1'. OS error:
+@\\.\pipe\stdin
+@']' expected, but found: 
+@symbol expected, but found: 
+@$1($2, $3) Error: $4
+@[EOF]
+@adler checksum not correct, data must be corrupted
+@too long backward distance
+@invalid distance code (30-31 are never used)
+@the length of the end code 256 must be larger than 0
+@unexisting code, this can never happen
+@wrong jump outside of tree
+@no endcode
+@i is larger than the amount of codes
+@bit pointer jumps past memory
+@can't repeat previous if i is 0
+@the bit pointer is or will go past the memory
+@oversubscribed
+@reading outside of input buffer
+@NLEN is not one's complement of LEN
+@invalid blockType
+@ zlib header must be a multiple of 31
+@bit pointer will jump past memory
+@size of zlib data too small
+@unsupported pixel8 converter
+@0123456789ABCDEF
+@unsupported converter8
+@unsupported RGB converter
+@unsupported RGBA converter
+@unsupported pixel16 converter
+@unsupported converter16
+@animation control error: offset
+@animation control error: dimension
+@animation numFrames error
+@bad IDAT
+@expected PLTE not found
+@no IDAT found
+@no IHDR found
+@invalid second range[0..60]
+@invalid minute range[0..59]
+@invalid hour range[0..23]
+@invalid day range[1..32]
+@invalid month range[1..12]
+@invalid year range[0..65535]
+@Decompress size doesn't match predict
+@unsupported interlace method
+@unsupported filter method
+@unsupported compression method
+@bit depth not allowed: 
+@color type not allowed: 
+@image width not allowed: 
+@error parse chunk: 
+@invalid sBIT value
+@invalid sBIT length
+@invalid histogram length
+@Histogram need PLTE
+@palette length not divisible by 10
+@palette length not divisible by 6
+@palette sample depth error
+@set position error
+@invalid sRGB length
+@invalid Chroma length
+@invalid gAMA length
+@no null termination char, corrupt?
+@iTXt len too short
+@unsupported comp proc
+@keyword too short or too long
+@pHYs must be 9 bytes
+@tIME must be 7 bytes
+@bkgd must be 6 byte
+@bkgd must be 2 byte
+@bkgd must be 1 byte
+@tRNS chunk not allowed for other color models
+@tRNS must be 6 bytes
+@index out of bound 2
+@tRNS must be 2 bytes
+@more alpha value than palette entries
+@palette size to big
+@Wrong PNGColorType value 
+@index out of bound 1
+@index out of bound 4
+@signature mismatch
+C:\Users\artis\nimcache\main_r\@m..@s..@s.nimble@spkgs@snico-0.4.9@snico@sstb_vorbis.nim.c
+/=mJ;=@vG=
+@explorer
+@screenshot-$1T$2.png
+@screenshots
+@/screenshots
+@Unable to open file: 
+@error creating RGB surface
+@Could not create window
+@config.ini
+@error queueing audio: 
+@Unable to open audio input device: 
+@Unable to initialize audio
+@gamecontrollerdb.txt
+@assets
+@character not in font: '
+@No font selected
+@Spritesheet size must be divisible by tile size: 
+@ tile:
+@loaded spritesheet: 
+@ needed if not passing chars to loadFont: 
+@Missing 
+@.dat
+@initFuncCalled = false
+@run
+@ !"#$%&'()*+,-./0123456789:;<=>?@abcdefghijklmnopqrstuvwxyz[\]^_`ABCDEFGHIJKLMNOPQRSTUVWXYZ{}~
+@ bitmaps of specified chars 
+@didn't load all characters from font, loaded: 
+@ chars
+@loaded font with 
+@ index: 
+@font already has character: 
+@ chars, width: 
+@ with 
+@loading font 
+@No spritesheet loaded: 
+@Invalid spritesheet 
+@invalid format string, cannot parse: 
+@YOU DIED :(
+@TRY HARDER :)
+@CONGRATULATIONS!
+@invalid type in format string for number, expected one  of 'x', 'X', 'b', 'd', 'o' but got: 
+@LEVEL 
+@PRESS SPACE TO START
+@Artis24106
+@RIDETI
+@bullet.png
+@font.png
+@rideti
+@artis24106
+@Q0-
+@mmain.nim.c
+.CRT$XLC@
+.idata$4@
+.idata$5@
+.idata$6@
+.idata$4@
+.idata$5@
+.idata$7@
+.idata$4@
+.idata$7@
+.idata$5@
+.idata$6@
+@m..@s..@s.nimble@spkgs@snico-0.4.9@snico@skeycodes.nim.c
+@m..@s..@s.nimble@spkgs@ssdl2_nim-2.0.14.3@ssdl2_nim@ssdl.nim.c
+@m..@s..@s.nimble@spkgs@snico-0.4.9@snico@scontroller.nim.c
+@m..@s..@s.nimble@spkgs@snico-0.4.9@snico@sbackends@scommon.nim.c
+@m..@s..@s.nimble@spkgs@snimPNG-0.3.1@snimPNG@snimz.nim.c
+@m..@s..@s.nimble@spkgs@snimPNG-0.3.1@snimPNG@sfilters.nim.c
+@m..@s..@s.nimble@spkgs@snimPNG-0.3.1@snimPNG.nim.c
+@m..@s..@s.nimble@spkgs@snico-0.4.9@snico@sstb_vorbis.nim.c
+@m..@s..@s.nimble@spkgs@snico-0.4.9@snico@sbackends@ssdl2.nim.c
+@m..@s..@s.nimble@spkgs@snico-0.4.9@snico@sfontdata.nim.c
+@m..@s..@s.nimble@spkgs@snico-0.4.9@snico.nim.c
