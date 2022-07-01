@@ -414,3 +414,97 @@ for k in range(2**1024):
 
 ### Excel
 
+1. `xlsm` 是包含 macro 的 xls 檔，可以用 `unzip` 解開，然後在 `xl/macrosheets/` 找到 macro sheet `sheet1.xml`。
+2. 跟 Execl 和 macro 實在不熟，最後直接寫個 script hardcode to win...。
+
+```python
+# from chal/xl/macrosheets/sheet1.xml
+a = '''
+FORMULA(mqLen!D14&amp;Mment!BA10&amp;coCGA!S17&amp;coCGA!Q19&amp;KRnsl!L19&amp;Mment!F3&amp;coCGA!G26&amp;coCGA!O23&amp;coCGA!P3&amp;coCGA!K12&amp;KRnsl!J19&amp;KRnsl!C11&amp;coCGA!N3&amp;mqLen!E4&amp;coCGA!D11&amp;KRnsl!T5&amp;JVHco!K10&amp;mqLen!BA14&amp;Mment!W1&amp;KRnsl!U13&amp;KRnsl!V9&amp;mqLen!C12&amp;KRnsl!J4&amp;Mment!Y19&amp;mqLen!K19&amp;JVHco!F2&amp;mqLen!K10&amp;coCGA!Z15&amp;mqLen!N21&amp;Mment!N1&amp;Mment!S2&amp;coCGA!X2&amp;Mment!D16&amp;coCGA!U26&amp;coCGA!R1&amp;mqLen!V9&amp;mqLen!R11&amp;Mment!X1&amp;coCGA!D5&amp;KRnsl!Z19&amp;mqLen!BA4&amp;coCGA!Z9&amp;coCGA!G7&amp;mqLen!U10&amp;Mment!U11&amp;coCGA!G18&amp;JVHco!V1&amp;mqLen!O26&amp;Mment!G5&amp;KRnsl!H22&amp;Mment!P10&amp;JVHco!W17&amp;Mment!F8&amp;coCGA!L15&amp;coCGA!H3&amp;KRnsl!U17&amp;KRnsl!BA11&amp;coCGA!X12&amp;KRnsl!F14&amp;Mment!B10&amp;KRnsl!V12&amp;Mment!U12&amp;coCGA!P14&amp;coCGA!Y1&amp;JVHco!B10&amp;JVHco!F16&amp;KRnsl!Q26&amp;Mment!P25&amp;KRnsl!M3&amp;KRnsl!I26&amp;mqLen!L15&amp;mqLen!V25&amp;KRnsl!G2&amp;Mment!I18&amp;Mment!M4&amp;KRnsl!C7&amp;JVHco!N5&amp;KRnsl!M19&amp;Mment!J9&amp;Mment!I7&amp;coCGA!G13&amp;KRnsl!M12&amp;mqLen!X2&amp;mqLen!M1&amp;JVHco!P3&amp;KRnsl!S12&amp;Mment!U10&amp;JVHco!D16&amp;mqLen!P17&amp;KRnsl!I5&amp;coCGA!W24&amp;JVHco!E10&amp;Mment!B8&amp;coCGA!C14&amp;JVHco!Z15&amp;Mment!BA11&amp;coCGA!F19&amp;KRnsl!Z2&amp;JVHco!D13&amp;Mment!O2&amp;KRnsl!D19&amp;Mment!K19&amp;Mment!U20&amp;JVHco!Q9&amp;KRnsl!I17&amp;coCGA!X17&amp;JVHco!Q24&amp;KRnsl!Q4&amp;coCGA!N21&amp;coCGA!W11&amp;JVHco!E17&amp;mqLen!H19&amp;KRnsl!X6&amp;coCGA!N26&amp;coCGA!N18&amp;KRnsl!Q17&amp;JVHco!J25&amp;KRnsl!Z16&amp;mqLen!P13&amp;coCGA!Z21&amp;JVHco!C24&amp;Mment!X19&amp;Mment!O21,A137)
+'''.strip()
+a = a[8:-6]
+a = a.replace('&amp;', '&')
+a = a.split('&')
+
+# hardcore...
+flag = ''
+for i in a:
+    c = input(f'{i} >')
+    if c.isnumeric():
+        c = chr(int(c))
+    flag += c
+print(flag)
+```
+
+**Flag: ` AIS3{XLM_iS_to0_o1d_but_co0o0o00olll!!}`**
+
+### Gift in the dream
+
+1. `strings` GIF 檔可以看到一些 hint，因此猜測 flag 跟 GIF 中每個 frame 的 duration 有關。寫個 script print 出來看看。
+
+```python
+from PIL import Image
+
+# ref: https://stackoverflow.com/questions/53364769/get-frames-per-second-of-a-gif-in-python
+
+im = Image.open('./gift_in_the_dream_updated.gif')
+try:
+    while 1:
+        print(im.info['duration'])
+        im.seek(im.tell()+1)
+except EOFError:
+    pass
+```
+
+<img width="800" alt="gift-in-the-dream-durations" src="https://user-images.githubusercontent.com/38059464/176882746-edc345bd-2ce1-4cbb-a0c3-4c33955ebbbd.png">
+
+2. 可以發現 `duration / 10` 皆在 ASCII 範圍內，因此把 `duration / 10` 組合起來即為 flag。 
+
+```python
+from PIL import Image
+
+# ref: https://stackoverflow.com/questions/53364769/get-frames-per-second-of-a-gif-in-python
+
+im = Image.open('./gift_in_the_dream_updated.gif')
+
+flag = ''
+try:
+    while 1:
+        flag += chr(im.info['duration'] // 10)
+        im.seek(im.tell()+1)
+except EOFError:
+    pass
+
+print(flag)
+```
+
+**Flag: `AIS3{5T3g4n0gR4pHy_c4N_b3_fUn_s0m37iMe}`**
+
+### Knock
+
+1. 根據題目猜測 knock 應該是指 server 會嘗試透過網路戳的機器，因此用 Wireshark listen 在 VPN 的 interface，發現有一些多的 UDP 封包。
+
+<img width="800" alt="knock-udp-packets" src="https://user-images.githubusercontent.com/38059464/176883739-82d28564-3957-4386-be14-5371673d6285.png">
+
+2. 觀察發現 UDP packet 的 dest. port 最後兩位數都在 ASCII 範圍內，且前四個封包 `63 73 83 51` 便是 `AIS3`，因此拉出來即是 flag。這題感覺有點通靈，但其實是一種 exfiltration 的方法。
+
+```python
+import scapy.all as scapy
+
+packets = scapy.rdpcap('./knock.pcapng')
+
+knock_packets = packets[scapy.UDP][12:]
+
+flag = ''
+for p in knock_packets:
+    flag += chr(p.dport - 12000)
+
+print(flag)
+```
+
+**Flag: `AIS3{kn0ckKNOCKknock}`**
+
+
+
+
+
