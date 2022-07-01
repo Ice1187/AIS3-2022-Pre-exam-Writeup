@@ -482,7 +482,7 @@ print(flag)
 
 ### Knock
 
-1. 根據題目猜測 knock 應該是指 server 會嘗試透過網路戳的機器，因此用 Wireshark listen 在 VPN 的 interface，發現有一些多的 UDP 封包。
+1. 根據題目猜測 knock 應該是指 server 會嘗試透過網路戳參賽者的機器，因此用 Wireshark listen 在 VPN 的 interface，發現有一些多的 UDP 封包。
 
 <img width="800" alt="knock-udp-packets" src="https://user-images.githubusercontent.com/38059464/176883739-82d28564-3957-4386-be14-5371673d6285.png">
 
