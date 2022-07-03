@@ -5,6 +5,38 @@
 
 <img width="800" alt="ais3-pre-exam-scoreboard" src="https://user-images.githubusercontent.com/38059464/175545378-5b5f373e-7da8-4c96-b7d7-463e5a16caf5.png" >
 
+
+## Table of Contents
+
+* [AIS3-2022-Pre-exam-Writeup](#ais3-2022-pre-exam-writeup)
+   * [Reverse](#reverse)
+      * [Time Management](#time-management)
+      * [Calculator](#calculator)
+      * [殼](#殼)
+      * [Flag Checker](#flag-checker)
+      * [Rideti](#rideti)
+      * [Strings](#strings)
+   * [Web](#web)
+      * [Poking Bear](#poking-bear)
+      * [Simple File Uploader](#simple-file-uploader)
+      * [Tari Tari](#tari-tari)
+      * [The Best Login UI](#the-best-login-ui)
+   * [Pwn](#pwn)
+      * [SAAS — Crash](#saas--crash)
+      * [BOF2WIN](#bof2win)
+      * [Give Me SC](#give-me-sc)
+      * [Magic](#magic)
+      * [UTF-8 Editor — Crash](#utf-8-editor--crash)
+   * [Crypto](#crypto)
+      * [SC](#sc)
+      * [Fast Cipher](#fast-cipher)
+   * [Misc](#misc)
+      * [Excel](#excel)
+      * [Gift in the dream](#gift-in-the-dream)
+      * [Knock](#knock)
+
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+
 ## Reverse
 ### Time Management
 
